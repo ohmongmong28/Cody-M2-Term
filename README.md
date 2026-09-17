@@ -51,25 +51,30 @@
 Term_Project_mybrand_project/
 │
 ├── brand_generator/              # 핵심 모듈 폴더
-│   ├── naming.py                 # 브랜드 네이밍 생성
-│   ├── slogan.py                 # 슬로건 & 스토리 생성
-│   ├── color_palette.py          # 컬러 팔레트 생성 & 시각화
-│   ├── logo.py                   # 로고 시안 생성 (matplotlib + DALL-E)
-│   ├── ad_copy.py                # 광고 카피 생성
-│   ├── menu_naming.py            # 메뉴 네이밍 생성
-│   └── multilingual.py           # 다국어 변환
+│   ├── api_client.py             # OpenAI API 연결 및 호출
+│   ├── brand_generator.py        # 브랜드 생성 메인 로직
+│   ├── main.py                   # CLI 진입점
+│   ├── prompt_templates.py       # 프롬프트 템플릿 관리
+│   └── storage.py                # 결과 저장 및 출력
 │
-├── brand_output/                 # 자동 생성 결과물 폴더
-│   ├── brand_output.txt          # 전체 텍스트 결과
-│   ├── brand_output.pdf          # PDF 보고서
-│   ├── brand_result.json         # 구조화 JSON 데이터
+├── brand_output/                 # 생성 결과물 폴더
+│   ├── brand_output.pdf          # PDF 결과 보고서
+│   ├── brand_output.txt          # 텍스트 결과
+│   ├── brand_result.json         # JSON 결과 데이터
 │   ├── color_palette.png         # 컬러 팔레트 이미지
-│   ├── logo_concept_1.png        # 로고 시안 1
-│   └── logo_concept_2.png        # 로고 시안 2
+│   ├── logo_concept_1.png        # 로고 컨셉 이미지
+│   ├── logo_dalle_1.png          # DALL-E 생성 로고 1
+│   ├── logo_dalle_2.png          # DALL-E 생성 로고 2
+│   └── logo_dalle_3.png          # DALL-E 생성 로고 3
 │
-├── brief.json                    # 브랜드 입력 정보
-├── main.py                       # 전체 파이프라인 실행 진입점
-└── README.md
+├── docs/                         # 문서 및 스크린샷
+│   ├── screenshot_1.png
+│   ├── screenshot_2.png
+│   └── screenshot_3.png
+│
+├── README.md                     # 프로젝트 설명서
+├── brand_generator.py            # 루트 실행 파일
+└── brand_result.json             # 루트 결과 데이터
 ```
 
 ---
