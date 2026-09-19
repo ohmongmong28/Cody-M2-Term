@@ -79,7 +79,7 @@ Term_Project_mybrand_project/
 
 ---
 
-### 📍 "모듈 책임 분리 원칙" 섹션 전체 교체
+### 📍 "모듈 책임 분리 원칙"
 
 ```markdown
 ### 모듈 책임 분리 원칙
@@ -107,7 +107,7 @@ Term_Project_mybrand_project/
 
 ---
 
-### 📍 "파이프라인 실행 흐름" 섹션 전체 교체
+### 📍 "파이프라인 실행 흐름"
 
 ```markdown
 ## 🔄 파이프라인 실행 흐름
@@ -135,11 +135,11 @@ Term_Project_mybrand_project/
         ↓
 11단계: TXT / PDF / JSON 저장 (save_txt / save_pdf / save_json)
 ```
-```
+
 
 ---
 
-### 📍 "컨텍스트 체인" 섹션 전체 교체
+### 📍 "컨텍스트 체인" 
 
 ```markdown
 ## 🔗 결과 저장 구조 (brand_result)
