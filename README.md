@@ -1,5 +1,6 @@
 # Cody-M2-Term
 코디세이 네이티브 팀미션2
+
 ---
 
 # 🎨 AI 브랜드 생성기 (AI Brand Generator)
@@ -48,44 +49,37 @@
 ## 📁 프로젝트 파일 구조
 
 ```
-Term_Project_mybrand_project/
+Term Project_mybrand_project/
 │
-├── brand_generator/              # 핵심 모듈 폴더
-│   ├── api_client.py             # OpenAI API 연결 및 호출
-│   ├── brand_generator.py        # 브랜드 생성 메인 로직
-│   ├── main.py                   # CLI 진입점
-│   ├── prompt_templates.py       # 프롬프트 템플릿 관리
-│   └── storage.py                # 결과 저장 및 출력
+├── brand_generator.py            # 브랜드 생성 메인 로직 (핵심 모듈)
+├── main.py                       # CLI 진입점
+├── brief.json                    # 브랜드 정보 입력 파일
+├── requirements.txt              # 필요 라이브러리 목록
+├── .env                          # API 키 환경변수 (git 제외)
+├── .gitignore                    # git 제외 파일 설정
 │
 ├── brand_output/                 # 생성 결과물 폴더
 │   ├── brand_output.pdf          # PDF 결과 보고서
 │   ├── brand_output.txt          # 텍스트 결과
 │   ├── brand_result.json         # JSON 결과 데이터
 │   ├── color_palette.png         # 컬러 팔레트 이미지
-│   ├── logo_concept_1.png        # 로고 컨셉 이미지
-│   ├── logo_dalle_1.png          # DALL-E 생성 로고 1
-│   ├── logo_dalle_2.png          # DALL-E 생성 로고 2
-│   └── logo_dalle_3.png          # DALL-E 생성 로고 3
+│   ├── logo_concept_1.png        # 로고 시안 1
+│   └── logo_concept_2.png        # 로고 시안 2
 │
-├── docs/                         # 문서 및 스크린샷
-│   ├── screenshot_1.png
-│   ├── screenshot_2.png
-│   └── screenshot_3.png
-│
-├── README.md                     # 프로젝트 설명서
-├── brand_generator.py            # 루트 실행 파일
-└── brand_result.json             # 루트 결과 데이터
+└── docs/                         # 문서 및 스크린샷
+    ├── screenshot_1.png
+    ├── screenshot_2.png
+    └── screenshot_3.png
 ```
 
 ---
 
-### 📍 "모듈 책임 분리 원칙"
+## 🔧 모듈 책임 분리 원칙
 
-```markdown
-### 모듈 책임 분리 원칙
 각 기능을 **독립 함수**로 분리하여 유지보수성과 재사용성을 높였습니다.
 
-[brand_generator.py]
+```
+brand_generator.py
     │
     ├── load_brief()                  → brief.json 읽기
     │
@@ -102,55 +96,48 @@ Term_Project_mybrand_project/
             ▼
     brand_result.json 최종 저장
     (errors 필드 포함)
-
 ```
 
 ---
 
-### 📍 "파이프라인 실행 흐름"
-
-```markdown
 ## 🔄 파이프라인 실행 흐름
+
 ### 단계별 실행 순서
 
-1단계: brief.json 읽기 (load_brief)
-        ↓
-2단계: 브랜드 네이밍 생성 (generate_naming)
-        ↓
-3단계: 슬로건 생성 (generate_slogan)
-        ↓
-4단계: 브랜드 스토리 생성 (generate_brand_story)
-        ↓
-5단계: 컬러 팔레트 생성 & 시각화 (generate_color_palette)
-        ↓
-6단계: 로고 시안 생성 (generate_logo_images)
-        ↓
-7단계: 광고 카피 생성 (generate_ad_copy)
-        ↓
-8단계: 메뉴 네이밍 생성 (generate_menu_naming)
-        ↓
-9단계: 메뉴 네이밍 스타일 생성 (generate_menu_naming_styles)
-        ↓
-10단계: 다국어 변환 (generate_multilingual)
-        ↓
-11단계: TXT / PDF / JSON 저장 (save_txt / save_pdf / save_json)
 ```
-
+1단계:  brief.json 읽기            (load_brief)
+        ↓
+2단계:  브랜드 네이밍 생성          (generate_naming)
+        ↓
+3단계:  슬로건 생성                (generate_slogan)
+        ↓
+4단계:  브랜드 스토리 생성          (generate_brand_story)
+        ↓
+5단계:  컬러 팔레트 생성 & 시각화   (generate_color_palette)
+        ↓
+6단계:  로고 시안 생성             (generate_logo_images)
+        ↓
+7단계:  광고 카피 생성             (generate_ad_copy)
+        ↓
+8단계:  메뉴 네이밍 생성           (generate_menu_naming)
+        ↓
+9단계:  메뉴 네이밍 스타일 생성     (generate_menu_naming_styles)
+        ↓
+10단계: 다국어 변환               (generate_multilingual)
+        ↓
+11단계: TXT / PDF / JSON 저장     (save_txt / save_pdf / save_json)
+```
 
 ---
 
-### 📍 "컨텍스트 체인" 
-
-```markdown
 ## 🔗 결과 저장 구조 (brand_result)
 
 각 단계는 **brand_result 딕셔너리**에 결과를 누적 저장합니다.
 
 ```python
-# brand_result 구조
 brand_result = {
-    "brand_name": "그린버거",        # brief.json에서 로드
-    "industry": "친환경 패스트푸드",  # brief.json에서 로드
+    "brand_name": "그린버거",
+    "industry": "친환경 패스트푸드",
     "generated_content": {
         "naming": "...",             # generate_naming() 실행 후 저장
         "slogan": "...",             # generate_slogan() 실행 후 저장
@@ -161,11 +148,11 @@ brand_result = {
         "menu_naming": "...",        # generate_menu_naming() 실행 후 저장
         "menu_naming_styles": "...", # generate_menu_naming_styles() 실행 후 저장
         "multilingual": {
-            "english": "...",        # generate_multilingual(brief, "en") 실행 후 저장
-            "japanese": "..."        # generate_multilingual(brief, "ja") 실행 후 저장
+            "english": "...",
+            "japanese": "..."
         }
     },
-    "errors": []  # 실패한 단계 기록
+    "errors": []  # 실패한 단계 기록 {"step": "...", "message": "..."}
 }
 ```
 
@@ -185,12 +172,12 @@ save_json() 실행
     → brand_result.json 최종 저장
 ```
 
+---
 
 ## 🤖 프롬프트 엔지니어링 전략
 
 ### 1. 톤앤매너 고정
 모든 프롬프트에 브랜드 톤을 명시하여 일관된 결과를 유도했습니다.
-
 
 ```python
 prompt = f"""
@@ -222,7 +209,6 @@ prompt = f"""
 ```
 
 ### 3. 포맷 제약 설계
-
 출력 품질을 높이기 위해 개수, 형식, 언어를 명시했습니다.
 
 ```python
@@ -256,7 +242,7 @@ def call_api_with_retry(prompt, max_retries=3):
                 print(f"재시도 {attempt+1}/{max_retries} ({wait_time}초 대기)")
                 time.sleep(wait_time)
             else:
-                return None  # 최종 실패 시 None 반환
+                return None
 ```
 
 ### 2. errors 필드로 실패 기록
@@ -267,10 +253,9 @@ API 호출 실패 시 결과 JSON의 `errors` 배열에 기록합니다.
 brand_result = {
     "brand_name": brand_name,
     "generated_content": {},
-    "errors": []   # 초기화
+    "errors": []
 }
 
-# 각 단계 실행 시
 try:
     result = generate_naming(brand_name)
     brand_result["generated_content"]["naming"] = result
@@ -341,29 +326,55 @@ if result is None:
       "step": "string",
       "message": "string"
     }
-  ],
-  "metadata": {
-    "generated_at": "string (YYYY-MM-DD HH:MM:SS)",
-    "pipeline_version": "string",
-    "status": "string (completed | partial | failed)"
-  }
+  ]
 }
 ```
 
 ---
 
-```markdown
+## 🚀 실행 방법
+
+### 1. 환경 설정
+
+```bash
+# 라이브러리 설치
+pip install -r requirements.txt
+```
+
+### 2. .env 파일 설정
+
+```
+OPENAI_API_KEY=your_api_key_here
+OPENAI_BASE_URL=your_base_url_here
+```
+
+### 3. brief.json 작성
+
+```json
+{
+  "brand_name": "그린버거",
+  "industry": "친환경 패스트푸드",
+  "target_audience": "20~30대 환경 관심 직장인",
+  "values": ["친환경", "건강", "트렌디"],
+  "tone": "친근하고 트렌디하며 진정성 있는"
+}
+```
+
+### 4. 실행
+
+```bash
+python main.py
+```
+
+---
+
 ## 🚀 단계별 작업 과정
 
 ### 1단계 - 환경 준비 (강민수 / 오승욱)
 - Python 설치 확인
 - VS Code 개발 환경 세팅
 - 필요한 라이브러리 설치
-
-```bash
-pip install openai matplotlib fpdf requests
-```
-
+- 
 ### 2단계 - OpenAI API 연결 (오승욱)
 - API 키 발급 및 환경 설정
 - baseURL 설정 및 GPT 모델 연결
@@ -382,8 +393,7 @@ pip install openai matplotlib fpdf requests
 
 ### 5단계 - 시각화 & 파일 저장 (오승욱 / 노현우)
 - matplotlib으로 컬러 팔레트 PNG 생성
-- matplotlib으로 로고 시안 PNG 생성
-- DALL-E로 AI 이미지 생성
+- DALL-E로 로고 시안 PNG 생성
 - 결과물 TXT / PDF / JSON 자동 저장
 
 ### 6단계 - 결과물 정리 & GitHub 업로드 (오승욱)
@@ -395,9 +405,8 @@ pip install openai matplotlib fpdf requests
 
 ## 📸 결과물 예시
 
-
-![프로그램 실행] 
-<img width="762" height="494" alt="screentshot_1" src="https://github.com/user-attachments/assets/24acaede-c584-46ef-8b98-909a08bb4b7b" />  
+![프로그램 실행]
+<img width="762" height="494" alt="screentshot_1" src="https://github.com/user-attachments/assets/2e6c193c-5cae-442f-ae6a-6f43ef0b363f" />
 
 ![실행 화면]
 <img width="926" height="3549" alt="screenshot_2" src="https://github.com/user-attachments/assets/2193804c-5586-45b5-9d83-6f5e5a41d224" />
@@ -406,10 +415,10 @@ pip install openai matplotlib fpdf requests
 <img width="1485" height="619" alt="color_palette" src="https://github.com/user-attachments/assets/853094a5-d72b-4c8f-a8a7-1e0c53937b80" />
 
 ![로고 시안 1]
-<img width="1024" height="1024" alt="logo_concept_1" src="https://github.com/user-attachments/assets/6e125069-4fee-475a-bb72-179ccf09fa3c" />
+<img width="1024" height="1024" alt="logo_concept_1" src="https://github.com/user-attachments/assets/950f404d-6ffc-4a12-95d9-66ca2323dde4" />
 
 ![로고 시안 2]
-<img width="1024" height="1024" alt="logo_dalle_1" src="https://github.com/user-attachments/assets/97a1cafa-1748-4d72-801b-0ac7444ae024" />
+<img width="1024" height="1024" alt="logo_concept_2" src="https://github.com/user-attachments/assets/7ece71dc-5b4d-4664-b85e-be54f9dc21cd" />
 
 ![결과 화면]
 <img width="438" height="236" alt="screentshot_3" src="https://github.com/user-attachments/assets/1cdae8b3-065f-46c8-bc8b-95910e76498e" />
@@ -446,19 +455,9 @@ pip install openai matplotlib fpdf requests
 | 🤖 AI 활용 | GPT 프롬프트 설계, DALL-E 이미지 생성 |
 | 🛠️ 문제 해결 | 오류 메시지 분석 및 대처, 디버깅 능력 향상 |
 | 📁 협업 도구 | GitHub 레포지토리 생성 및 포트폴리오 관리 |
-| 🔗 모듈 설계 | 기능별 파일 분리, shared_state 컨텍스트 공유 |
+| 🔗 모듈 설계 | 기능별 함수 분리, brand_result 컨텍스트 공유 |
 | 🛡️ 안정성 | 재시도 로직, 에러 핸들링, fallback 전략 |
 
 이 프로젝트를 통해 단순히 코드를 작성하는 것을 넘어,  
 **오류를 스스로 분석하고 해결하는 능력**과  
 **AI API를 활용한 실전 파이프라인 설계 경험**을 쌓을 수 있었습니다. 🚀
-
----
-
-## 👤 팀 프로젝트 인원
-
-| 이름 | 역할 |
-|------|------|
-| 오승욱 | API 연결, 전체 파이프라인 설계, GitHub 관리 |
-| 노현우 | 텍스트 콘텐츠 생성, 메뉴 네이밍, 다국어 |
-| 강민수 | 환경 세팅, 시각화, 파일 저장 |
