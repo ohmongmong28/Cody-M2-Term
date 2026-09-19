@@ -79,133 +79,118 @@ Term_Project_mybrand_project/
 
 ---
 
-## 🏗️ 아키텍처 & 모듈 설계
+### 📍 "모듈 책임 분리 원칙" 섹션 전체 교체
 
+```markdown
 ### 모듈 책임 분리 원칙
+각 기능을 **독립 함수**로 분리하여 유지보수성과 재사용성을 높였습니다.
 
-각 기능을 **독립 모듈**로 분리하여 유지보수성과 재사용성을 높였습니다.
-
-```
-[main.py]
+[brand_generator.py]
     │
-    ├── brief.json 읽기 (브랜드 입력 정보)
+    ├── load_brief()                  → brief.json 읽기
     │
-    ├── shared_state 초기화 (단계 간 데이터 공유)
-    │
-    ├── naming.py      → 네이밍 결과 → shared_state 저장
-    ├── slogan.py      → 슬로건/스토리 → shared_state 저장
-    ├── color_palette.py → 컬러 정보 → shared_state 저장
-    ├── logo.py        → 로고 이미지 경로 → shared_state 저장
-    ├── ad_copy.py     → 광고 카피 → shared_state 저장
-    ├── menu_naming.py → 메뉴명 → shared_state 저장
-    └── multilingual.py → 다국어 결과 → shared_state 저장
+    ├── generate_naming()             → 네이밍 결과 → brand_result 저장
+    ├── generate_slogan()             → 슬로건 → brand_result 저장
+    ├── generate_brand_story()        → 브랜드 스토리 → brand_result 저장
+    ├── generate_color_palette()      → 컬러 정보 + PNG → brand_result 저장
+    ├── generate_logo_images()        → 로고 이미지 경로 → brand_result 저장
+    ├── generate_ad_copy()            → 광고 카피 → brand_result 저장
+    ├── generate_menu_naming()        → 메뉴명 → brand_result 저장
+    ├── generate_menu_naming_styles() → 메뉴 스타일 → brand_result 저장
+    └── generate_multilingual()       → 다국어 결과 → brand_result 저장
             │
             ▼
     brand_result.json 최종 저장
     (errors 필드 포함)
+
 ```
 
 ---
 
-## 🔄 파이프라인 실행 흐름
+### 📍 "파이프라인 실행 흐름" 섹션 전체 교체
 
+```markdown
+## 🔄 파이프라인 실행 흐름
 ### 단계별 실행 순서
 
+1단계: brief.json 읽기 (load_brief)
+        ↓
+2단계: 브랜드 네이밍 생성 (generate_naming)
+        ↓
+3단계: 슬로건 생성 (generate_slogan)
+        ↓
+4단계: 브랜드 스토리 생성 (generate_brand_story)
+        ↓
+5단계: 컬러 팔레트 생성 & 시각화 (generate_color_palette)
+        ↓
+6단계: 로고 시안 생성 (generate_logo_images)
+        ↓
+7단계: 광고 카피 생성 (generate_ad_copy)
+        ↓
+8단계: 메뉴 네이밍 생성 (generate_menu_naming)
+        ↓
+9단계: 메뉴 네이밍 스타일 생성 (generate_menu_naming_styles)
+        ↓
+10단계: 다국어 변환 (generate_multilingual)
+        ↓
+11단계: TXT / PDF / JSON 저장 (save_txt / save_pdf / save_json)
 ```
-1단계: brief.json 읽기
-        ↓
-2단계: 브랜드 네이밍 생성 (naming.py)
-        ↓
-3단계: 슬로건 & 브랜드 스토리 생성 (slogan.py)
-        ↓
-4단계: 컬러 팔레트 생성 & 시각화 (color_palette.py)
-        ↓
-5단계: 로고 시안 생성 (logo.py)
-        ↓
-6단계: 광고 카피 생성 (ad_copy.py)
-        ↓
-7단계: 메뉴 네이밍 생성 (menu_naming.py)
-        ↓
-8단계: 다국어 변환 (multilingual.py)
-        ↓
-9단계: TXT / PDF / JSON 저장
-```
-
-### 입출력 예시
-
-**입력 (brief.json)**
-```json
-{
-  "brand_name": "그린버거",
-  "industry": "친환경 패스트푸드",
-  "target": "20~30대 환경 관심 직장인",
-  "tone": "친근하고 트렌디한"
-}
-```
-
-**출력 (brand_result.json)**
-```json
-{
-  "brand_name": "그린버거",
-  "industry": "친환경 패스트푸드",
-  "generated_content": {
-    "naming": "1. 초록한입 / Green Bite ...",
-    "slogan": "1. 맛있게, 가볍게, 그린버거 ...",
-    "brand_story": "바쁜 하루 속에서도 ...",
-    "color_palette": { "main_color": {...}, "sub_colors": [...] },
-    "logo_image_paths": ["brand_output\\logo_concept_1.png"],
-    "ad_copy": "1. 맛있게, 지구답게 ...",
-    "menu_naming": "...",
-    "menu_naming_styles": "..."
-  },
-  "errors": [],
-  "metadata": {
-    "generated_at": "2026-09-17 11:21:53",
-    "pipeline_version": "1.0.0",
-    "status": "completed"
-  }
-}
 ```
 
 ---
 
-## 🔗 컨텍스트 체인 (shared_state)
+### 📍 "컨텍스트 체인" 섹션 전체 교체
 
-각 단계는 **shared_state** 딕셔너리를 통해 이전 단계의 결과를 공유합니다.
+```markdown
+## 🔗 결과 저장 구조 (brand_result)
+
+각 단계는 **brand_result 딕셔너리**에 결과를 누적 저장합니다.
 
 ```python
-# shared_state 구조
-shared_state = {
+# brand_result 구조
+brand_result = {
     "brand_name": "그린버거",        # brief.json에서 로드
     "industry": "친환경 패스트푸드",  # brief.json에서 로드
-    "naming": "...",                 # naming.py 실행 후 저장
-    "slogan": "...",                 # slogan.py 실행 후 저장
-    "color_palette": {...},          # color_palette.py 실행 후 저장
-    "logo_image_paths": [...],       # logo.py 실행 후 저장
-    "ad_copy": "...",                # ad_copy.py 실행 후 저장
+    "generated_content": {
+        "naming": "...",             # generate_naming() 실행 후 저장
+        "slogan": "...",             # generate_slogan() 실행 후 저장
+        "brand_story": "...",        # generate_brand_story() 실행 후 저장
+        "color_palette": {...},      # generate_color_palette() 실행 후 저장
+        "logo_image_paths": [...],   # generate_logo_images() 실행 후 저장
+        "ad_copy": "...",            # generate_ad_copy() 실행 후 저장
+        "menu_naming": "...",        # generate_menu_naming() 실행 후 저장
+        "menu_naming_styles": "...", # generate_menu_naming_styles() 실행 후 저장
+        "multilingual": {
+            "english": "...",        # generate_multilingual(brief, "en") 실행 후 저장
+            "japanese": "..."        # generate_multilingual(brief, "ja") 실행 후 저장
+        }
+    },
+    "errors": []  # 실패한 단계 기록
 }
 ```
 
 ### 단계 간 데이터 흐름 예시
 
 ```
-naming.py 실행
-    → shared_state["naming"] = "1. 초록한입 / Green Bite ..."
+generate_naming() 실행
+    → brand_result["generated_content"]["naming"] = "1. 초록한입 / Green Bite ..."
         ↓
-slogan.py에서 shared_state["naming"] 참조
-    → 네이밍 결과를 반영한 슬로건 생성
+generate_slogan() 실행
+    → brand_result["generated_content"]["slogan"] = "맛있게, 가볍게, 그린버거 ..."
         ↓
-ad_copy.py에서 shared_state["slogan"] 참조
-    → 슬로건 톤에 맞는 광고 카피 생성
+generate_ad_copy() 실행
+    → brand_result["generated_content"]["ad_copy"] = "1. 맛있게, 지구답게 ..."
+        ↓
+save_json() 실행
+    → brand_result.json 최종 저장
 ```
 
----
 
 ## 🤖 프롬프트 엔지니어링 전략
 
 ### 1. 톤앤매너 고정
-
 모든 프롬프트에 브랜드 톤을 명시하여 일관된 결과를 유도했습니다.
+
 
 ```python
 prompt = f"""
@@ -219,7 +204,6 @@ prompt = f"""
 ```
 
 ### 2. JSON 출력 강제화
-
 GPT 응답을 JSON으로 고정하여 파싱 오류를 방지했습니다.
 
 ```python
